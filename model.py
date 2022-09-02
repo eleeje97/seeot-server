@@ -1,5 +1,3 @@
-from sqlalchemy_serializer import SerializerMixin
-
 import app
 
 db = app.db
@@ -7,8 +5,6 @@ db = app.db
 
 class User(db.Model):
     __tablename__ = 'USER'
-
-    # serialize_only = ('id', 'nickname', 'gender', 'full_body_img_path')
 
     id = db.Column(db.String(50), primary_key=True)
     nickname = db.Column(db.String(30), nullable=False)
