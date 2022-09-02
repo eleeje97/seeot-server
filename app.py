@@ -21,7 +21,9 @@ def get_users():
     from model import User
 
     users = User.query.all()
-    return users
+    response = {'users': [i.as_dict() for i in users]}
+
+    return response
 
 
 if __name__ == '__main__':
