@@ -30,5 +30,7 @@ class Oauth:
                 **self.default_header,
                 **{"Authorization": bearer_token}
             },
-            data={}
+            data={
+                'property_keys': '["kakao_account.profile", "kakao_account.gender"]'
+            }
         ).json()

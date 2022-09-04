@@ -4,12 +4,13 @@ db = app.db
 
 
 class User(db.Model):
-    __tablename__ = 'USER'
+    __tablename__ = 'SEEOT_USER'
 
     id = db.Column(db.String(50), primary_key=True)
     nickname = db.Column(db.String(30), nullable=False)
     gender = db.Column(db.String(10), nullable=True)
     full_body_img_path = db.Column(db.String(255), nullable=True)
+    access_token = db.Column(db.String(200), nullable=False)
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
