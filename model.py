@@ -11,12 +11,13 @@ class User(db.Model):
     gender = db.Column(db.String(10), nullable=True)
     full_body_img_path = db.Column(db.String(255), nullable=True)
     access_token = db.Column(db.String(200), nullable=False)
+    refresh_token = db.Column(db.String(200))
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     def __repr__(self):
-        return self.as_dict()
+        return str(self.as_dict())
 
 
 class MyCloth(db.Model):

@@ -34,3 +34,23 @@ class Oauth:
                 'property_keys': '["kakao_account.profile", "kakao_account.gender"]'
             }
         ).json()
+
+    def token(self, refresh_token):
+        return requests.post(
+            url=self.auth_server % "/oauth/token",
+            headers=self.default_header,
+            data={
+                "grant_type": "refresh_token",
+                "client_id": CLIENT_ID,
+                "refresh_token": refresh_token
+            }
+        ).json()
+
+    def logout(self, bearer_token):
+        return requests.post(
+            url=self.api_server % "/v1/user/logout",
+            headers={
+                **self.default_header,
+                **{"Authorization": bearer_token}
+            }
+        ).json()
