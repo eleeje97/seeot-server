@@ -1,6 +1,7 @@
 from flask import Blueprint, request, render_template
 
 from kakao_controller import Oauth
+from key.file_path import USER_FULLBODY_DIR
 
 accounts = Blueprint('accounts', __name__, url_prefix='/accounts')
 
@@ -118,8 +119,6 @@ def user_info():
 @accounts.route('/upload/fullbody', methods=['POST'])
 def upload_fullbody():
     import os
-    # user_fullbody_dir = '/Users/danalee/gyeonggiAI/project3/user_fullbody'
-    user_fullbody_dir = '/data/seeot-data/user_fullbody'
 
     if request.method == 'POST':
         user_id = request.values['user_id']
@@ -128,11 +127,11 @@ def upload_fullbody():
         if len(file.filename) == 0:
             return {'message': 'No File Uploaded!'}, 400
 
-        os.makedirs(user_fullbody_dir, exist_ok=True)
+        os.makedirs(USER_FULLBODY_DIR, exist_ok=True)
         # filename = user_id + '.' + file.filename.split('.')[1]
         filename = user_id + '.jpg'
-        file.save(os.path.join(user_fullbody_dir, filename))
+        file.save(os.path.join(USER_FULLBODY_DIR, filename))
 
         return {'message': 'Image Uploaded!',
                 'user_id': user_id,
-                'file_path': user_fullbody_dir + '/' + filename}
+                'file_path': USER_FULLBODY_DIR + '/' + filename}
