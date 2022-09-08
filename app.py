@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 import accounts
@@ -6,6 +7,7 @@ import oauth
 from config import DB_URL
 
 app = Flask(__name__)
+CORS(app)
 app.register_blueprint(oauth.kakao)
 app.register_blueprint(accounts.accounts)
 
