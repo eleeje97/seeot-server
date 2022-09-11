@@ -20,11 +20,11 @@ class User(db.Model):
         return str(self.as_dict())
 
 
-class MyCloth(db.Model):
-    __tablename__ = 'MY_CLOTH'
+class MyClothes(db.Model):
+    __tablename__ = 'MY_CLOTHES'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.String(50), db.ForeignKey('USER.id'), nullable=False)
+    user_id = db.Column(db.String(50), db.ForeignKey('SEEOT_USER.id'), nullable=False)
     origin_img_path = db.Column(db.String(255), nullable=True)
     season = db.Column(db.String(30), nullable=True)
     is_user_img = db.Column(db.Boolean, nullable=True)
