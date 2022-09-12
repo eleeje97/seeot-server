@@ -6,6 +6,7 @@ import accounts
 import clothes
 import oauth
 import recommendation
+import tryon
 from config import DB_URL
 
 app = Flask(__name__)
@@ -14,6 +15,7 @@ app.register_blueprint(oauth.kakao)
 app.register_blueprint(accounts.accounts)
 app.register_blueprint(recommendation.recommendation)
 app.register_blueprint(clothes.clothes)
+app.register_blueprint(tryon.tryon)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 db = SQLAlchemy(app)
