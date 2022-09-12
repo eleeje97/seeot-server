@@ -36,8 +36,8 @@ def upload_user_clothes():
         file.save(os.path.join(USER_CLOTHES_DIR, filename))
 
         ########## openpose, humanparsing ##########
-        # import sys
-        # sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+        import sys
+        sys.path.append('/data/seeot-model')
 
         from openpose import run
         # run.get_keypoints(os.path.join(USER_CLOTHES_DIR, filename))
