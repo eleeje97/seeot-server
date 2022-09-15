@@ -107,31 +107,55 @@ def user_info():
     nickname = user.nickname
     gender = user.gender
     profile_image_url = kakao_account['profile']['profile_image_url']
+    full_body_img_path = user.full_body_img_path
 
     response = {'user': {'id': user_id,
                          'nickname': nickname,
                          'gender': gender,
-                         'profile_image_url': profile_image_url}}
+                         'profile_image_url': profile_image_url,
+                         'full_body_img_path': full_body_img_path}}
 
     return response
 
 
-@accounts.route('/upload/fullbody', methods=['POST'])
-def upload_fullbody():
+@accounts.route('/update/profile', methods=['POST'])
+def update_profile():
     import os
+    from model import User
+    import app
+
+    db = app.db
 
     if request.method == 'POST':
         user_id = request.values['user_id']
+        gender = request.values['gender']
         file = request.files['file']
+        print(gender)
         print(file)
+
+        # DB에 update
+        user = User.query.filter(User.id == user_id).first()
+        if user is None:
+            return {'message': 'Authentication Failed!'}, 401
+
         if len(file.filename) == 0:
-            return {'message': 'No File Uploaded!'}, 400
+            file_path = 'No File Uploaded!'
+        else:
+            os.makedirs(USER_FULLBODY_DIR, exist_ok=True)
+            # filename = user_id + '.' + file.filename.split('.')[1]
+            filename = user_id + '.jpg'
+            file.save(os.path.join(USER_FULLBODY_DIR, filename))
 
-        os.makedirs(USER_FULLBODY_DIR, exist_ok=True)
-        # filename = user_id + '.' + file.filename.split('.')[1]
-        filename = user_id + '.jpg'
-        file.save(os.path.join(USER_FULLBODY_DIR, filename))
+            file_path = USER_FULLBODY_DIR + '/' + filename
+            user.full_body_img_path = file_path
 
-        return {'message': 'Image Uploaded!',
+        user.gender = gender
+        db.session.commit()
+
+        return {'message': 'Profile Updated!',
                 'user_id': user_id,
-                'file_path': USER_FULLBODY_DIR + '/' + filename}
+                'gender': gender,
+                'file_path': file_path}
+
+
+# @accounts.route('')
