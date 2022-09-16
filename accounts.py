@@ -135,7 +135,7 @@ def update_profile():
         if user is None:
             return {'message': 'Authentication Failed!'}, 401
 
-        if request.values['file']:
+        if request.files:
             file = request.files['file']
             os.makedirs(USER_FULLBODY_DIR, exist_ok=True)
             # filename = user_id + '.' + file.filename.split('.')[1]
