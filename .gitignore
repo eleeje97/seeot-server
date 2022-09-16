@@ -257,3 +257,7 @@ cython_debug/
 
 # key files
 key/
+
+# data files
+static/
+
