@@ -129,18 +129,14 @@ def update_profile():
     if request.method == 'POST':
         user_id = request.values['user_id']
         gender = request.values['gender']
-        file = request.files['file']
-        print(gender)
-        print(file)
 
         # DB에 update
         user = User.query.filter(User.id == user_id).first()
         if user is None:
             return {'message': 'Authentication Failed!'}, 401
 
-        if len(file.filename) == 0:
-            file_path = 'No File Uploaded!'
-        else:
+        if request.values['file']:
+            file = request.files['file']
             os.makedirs(USER_FULLBODY_DIR, exist_ok=True)
             # filename = user_id + '.' + file.filename.split('.')[1]
             filename = user_id + '.jpg'
@@ -148,6 +144,8 @@ def update_profile():
 
             file_path = USER_FULLBODY_DIR + '/' + filename
             user.full_body_img_path = file_path
+        else:
+            file_path = 'No File Uploaded!'
 
         user.gender = gender
         db.session.commit()
