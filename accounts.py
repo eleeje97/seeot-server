@@ -127,11 +127,20 @@ def update_profile():
     db = app.db
 
     if request.method == 'POST':
-        user_id = request.values['user_id']
-        gender = request.values['gender']
-        file = request.files['file']
-        print(gender)
-        print(file)
+        print(request)
+        print(request.data)
+        print(request.values)
+        print(request.files)
+
+        user_id = request.data['user_id']
+        gender = request.data['gender']
+        file = request.data['file']
+
+        # user_id = request.values['user_id']
+        # gender = request.values['gender']
+        # file = request.files['file']
+        # print(gender)
+        # print(file)
 
         # DB에 update
         user = User.query.filter(User.id == user_id).first()
