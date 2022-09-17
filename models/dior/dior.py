@@ -1,12 +1,12 @@
 import torch
-from models.dior_model import DIORModel
+from .models.dior_model import DIORModel
 import os, json
 import torch.nn.functional as F
 from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
-from datasets.deepfashion_datasets import DFVisualDataset
-import utils.pose_utils as pose_utils
+from .datasets.deepfashion_datasets import DFVisualDataset
+from .utils import pose_utils as pose_utils
 
 
 class Opt:

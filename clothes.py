@@ -46,3 +46,21 @@ def upload_user_clothes():
         return {'message': 'Image Uploaded!',
                 'user_id': user_id,
                 'file_path': USER_CLOTHES_DIR + '/' + filename}
+
+
+@clothes.route('/test', methods=['GET'])
+def test():
+    ### 필요한 모듈 임포트 ###
+    # import models.....
+
+    # 테스트 이미지 경로: /data/seeot-server/static/user_clothes/clothes_test.jpg
+
+    # gender = request.args['gender']
+    clothes_url = request.args['clothes_url']
+
+
+    ### 옷 분류 모델 실행 ###
+    
+
+
+    return {'clothes_url': clothes_url}

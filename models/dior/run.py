@@ -1,7 +1,7 @@
 ####################################
 # MODULE INIT
 ####################################
-from dior import DIOR
+from .dior import DIOR
 dior_model = DIOR()
 
 

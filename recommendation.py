@@ -66,3 +66,10 @@ def save_recommendation():
     return {'message': 'Image Save Success!',
             'user_id': user_id,
             'file_path': img_path}
+
+
+@recommendation.route('/test', methods=['GET'])
+def test():
+
+
+    return '여기는 추천 api'
