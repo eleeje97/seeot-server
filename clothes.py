@@ -48,19 +48,48 @@ def upload_user_clothes():
                 'file_path': USER_CLOTHES_DIR + '/' + filename}
 
 
-@clothes.route('/test', methods=['GET'])
-def test():
+@clothes.route('openpose', methods=['GET'])
+def openpose():
+    from models.openpose import run
+    run.get_keypoints('/data/seeot-model/02_4_full.jpg')
+    return {'message': 'OPENPOSE SUCCESS!'}
+
+@clothes.route('human_parsing', methods=['GET'])
+def human_parsing():
+    from models.human_parsing import run
+    origin_img_path = '/data/seeot-model/02_4_full.jpg'
+    output_img_path = '/data/seeot-model/temp/02_4_full.png'
+    run.human_parsing(origin_img_path, output_img_path)
+    return {'message': 'HUMAN_PARSING SUCCESS!'}
+
+@clothes.route('/cc', methods=['GET'])
+def Classification():
     ### 필요한 모듈 임포트 ###
-    # import models.....
+    from models.efficientnet.run import efficientnet
 
-    # 테스트 이미지 경로: /data/seeot-server/static/user_clothes/clothes_test.jpg
+    # 밖으로 빼고싶은거 (app.py에 적재시 코드 제거 또는 주석)
+    from models.efficientnet.load_model import Load_Model
+    lm = Load_Model()
+    male_model, female_model = lm.set_model()
 
-    # gender = request.args['gender']
-    clothes_url = request.args['clothes_url']
+    ## 받아오는거 : 성별 / 사진이 저장되어있는 경로
 
+    ## 나갈꺼 사진의 계절
+#     clothes_path = request.args['clothes_url']
+#     gender = request.args["gender"]
+    gender = "female"
 
     ### 옷 분류 모델 실행 ###
-    
+    cla = ""
+    if gender == "male":
+        # male model
+        clm = efficientnet(male_model)
+#         cla = clm.run(clothes_path)
+        cla = clm.run()
+    else:
+        # female model
+        clm = efficientnet(female_model)
+#         cla = clm.run(clothes_path)
+        cla = clm.run()
 
-
-    return {'clothes_url': clothes_url}
+    return cla

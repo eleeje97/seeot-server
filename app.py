@@ -9,6 +9,11 @@ import recommendation
 import tryon
 from config import DB_URL
 
+## efficientnet 모델 적재코드 (주석 해제시 clothes의 코드 수정)
+# from models.efficientnet.load_model import Load_Model
+# lm = Load_Model()
+# male_model, female_model = lm.set_model()
+
 app = Flask(__name__)
 CORS(app)
 app.register_blueprint(oauth.kakao)

@@ -45,8 +45,8 @@ class DIOR:
         opt.warmup = False
         opt.name = exp_name
         opt.vgg_path = ''
-        opt.flownet_path = 'checkpoints/flownet.pt'
-        opt.checkpoints_dir = 'checkpoints'
+        opt.flownet_path = '/data/seeot-server/models/dior/checkpoints/flownet.pt'
+        opt.checkpoints_dir = '/data/seeot-server/models/dior/checkpoints'
         opt.frozen_enc = True
         opt.load_iter = 0
         opt.epoch = epoch
