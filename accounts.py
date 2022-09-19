@@ -29,14 +29,16 @@ def kakao_login():
     kakao_account = user_info["kakao_account"]
     profile = kakao_account["profile"]
 
+    print(kakao_account)
+
     id = str(user_info["id"])
     user = User.query.filter(User.id == id).first()
     if user is None:
         nickname = profile["nickname"]
-        if kakao_account["has_gender"]:
-            gender = kakao_account["gender"]
-        else:
+        if kakao_account["gender_needs_agreement"]:
             gender = 'male'
+        else:
+            gender = kakao_account["gender"]
         user = User(id=id,
                     nickname=nickname,
                     gender=gender,
