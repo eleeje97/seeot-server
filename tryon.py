@@ -9,13 +9,13 @@ def try_on():
 
     from models.dior import run
 
-#    user_id = request.args['user_id']
-#    top = request.args['top']
-#    bottom = request.args['bottom']
-#    outer = request.args['outer']
+    user_id = request.args['user_id']
+    top = request.args['top']
+    bottom = request.args['bottom']
+    outer = request.args['outer']
 
     # 문서에 저장
-    run.try_on(0, 1, 2, 1)
+    # run.try_on(0, 1, 2, 1)
 
-    return {'message': 'SUCCESS!'}
+    return {'output_img': 'Output Image URL'}
 
