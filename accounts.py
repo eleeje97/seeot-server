@@ -123,6 +123,7 @@ def update_profile():
     import os
     from model import User
     import app
+    from models.human_parsing import run
 
     db = app.db
 
@@ -138,12 +139,15 @@ def update_profile():
         if request.files:
             file = request.files['file']
             os.makedirs(USER_FULLBODY_DIR, exist_ok=True)
-            # filename = user_id + '.' + file.filename.split('.')[1]
             filename = user_id + '.jpg'
             file.save(os.path.join(USER_FULLBODY_DIR, filename))
 
             file_path = USER_FULLBODY_DIR + '/' + filename
             user.full_body_img_path = file_path
+
+            origin_img_path = file_path
+            output_img_path = USER_FULLBODY_DIR + '/' + user_id + '.png'
+            run.human_parsing(origin_img_path, output_img_path)
         else:
             file_path = 'No File Uploaded!'
 
