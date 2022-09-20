@@ -21,7 +21,10 @@ def get_recommendations():
     else:
         print('male이거나 성별이 없으면 남자 옷 추천')
 
-    return user.gender
+    return {'gender': user.gender,
+            'clothes': ['http://210.106.99.80:5050/static/reco1.jpg',
+                        'http://210.106.99.80:5050/static/reco2.jpg',
+                        'http://210.106.99.80:5050/static/reco3.jpg']}
 
 
 @recommendation.route('/save', methods=['GET'])
