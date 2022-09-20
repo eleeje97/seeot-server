@@ -12,16 +12,21 @@ def get_recommendations():
     db = app.db
 
     user_id = request.args['user_id']
-    user = User.query.filter(User.id == user_id).first()
-    if user is None:
-        return {'message': 'Authentication Failed!'}, 401
+    print(user_id)
+    if user_id is None:
+        gender = 'male'
+    else:
+        user = User.query.filter(User.id == user_id).first()
+        if user is None:
+            return {'message': 'Authentication Failed!'}, 401
+        gender = user.gender
 
-    if user.gender == 'female':
+    if gender == 'female':
         print('여자 옷 추천')
     else:
         print('male이거나 성별이 없으면 남자 옷 추천')
 
-    return {'gender': user.gender,
+    return {'gender': gender,
             'clothes': ['http://210.106.99.80:5050/static/reco1.jpg',
                         'http://210.106.99.80:5050/static/reco2.jpg',
                         'http://210.106.99.80:5050/static/reco3.jpg']}
