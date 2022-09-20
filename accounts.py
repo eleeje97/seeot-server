@@ -52,6 +52,7 @@ def kakao_login():
         user.refresh_token = refresh_token
 
     db.session.commit()
+    db.session.close()
 
     return {'message': 'Kakao Login Success!', 'user_id': id}
 
@@ -102,6 +103,7 @@ def user_info():
         new_access_token = oauth.token(user.refresh_token)['access_token']
         user.access_token = new_access_token
         db.session.commit()
+        db.session.close()
 
         user_info = oauth.userinfo("Bearer " + new_access_token)
 
@@ -155,6 +157,7 @@ def update_profile():
 
         user.gender = gender
         db.session.commit()
+        db.session.close()
 
         return {'message': 'Profile Updated!',
                 'user_id': user_id,
