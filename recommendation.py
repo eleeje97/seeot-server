@@ -12,8 +12,7 @@ def get_recommendations():
     db = app.db
 
     user_id = request.args['user_id']
-    print(user_id)
-    if user_id is None:
+    if user_id == 'null':
         gender = 'male'
     else:
         user = User.query.filter(User.id == user_id).first()
