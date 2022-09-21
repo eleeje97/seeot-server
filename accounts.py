@@ -53,6 +53,7 @@ def kakao_login():
 
     db.session.commit()
     db.session.close()
+    db.session.remove()
 
     return {'message': 'Kakao Login Success!', 'user_id': id}
 
