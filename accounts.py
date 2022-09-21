@@ -151,7 +151,7 @@ def update_profile():
 
             origin_img_path = file_path
             output_img_path = USER_FULLBODY_DIR + '/' + user_id + '.png'
-            run.human_parsing(origin_img_path, output_img_path)
+            # run.human_parsing(origin_img_path, output_img_path)
         else:
             file_path = 'No File Uploaded!'
 
