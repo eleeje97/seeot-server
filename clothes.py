@@ -15,8 +15,8 @@ def get_clothes_list():
     recommend_clothes = MyClothes.query.filter(not MyClothes.is_user_img).filter(MyClothes.user_id == user_id).all()
 
     return {'user_id': user_id,
-            'user_clothes': [i.origin_img_path for i in user_clothes],
-            'recommend_clothes': [i.origin_img_path for i in recommend_clothes]}
+            'user_clothes': [i.as_dict() for i in user_clothes],
+            'recommend_clothes': [i.as_dict() for i in recommend_clothes]}
 
 
 @clothes.route('/upload', methods=['POST'])
