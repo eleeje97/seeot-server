@@ -9,8 +9,8 @@ import os
 
 from .src.body import Body
 
+
 def get_keypoints(img_path):
-    
     body_estimation = Body('models/openpose/model/body_pose_model.pth')
 
     # copy image into input/
@@ -40,5 +40,3 @@ def get_keypoints(img_path):
     # print([int(i) for i in keypoints_x])
     # print([int(i) for i in keypoints_y])
 
-
-# get_keypoints('/data/seeot-model/02_4_full.jpg')
