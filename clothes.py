@@ -62,7 +62,7 @@ def upload_user_clothes():
 
         ## 받아오는거 : 성별 / 사진이 저장되어있는 경로
         ## 나갈꺼 사진의 계절
-        clothes_path = output_img_path
+        clothes_path = origin_img_path
 
         ### 옷 분류 모델 실행 ###
         cla = ""
