@@ -148,15 +148,15 @@ def update_profile():
 
             filename = user_id + '.jpg'
             file_path = USER_FULLBODY_DIR + '/' + filename
-            file_path_temp = USER_FULLBODY_DIR + '/' + user_id + '_temp.jpg'
-
-            if os.path.exists(file_path_temp):
-                os.remove(file_path_temp)
-
-            if os.path.exists(file_path):
-                os.remove(file_path)
-                filename = user_id + '_temp.jpg'
-                file_path = USER_FULLBODY_DIR + '/' + filename
+            # file_path_temp = USER_FULLBODY_DIR + '/' + user_id + '_temp.jpg'
+            #
+            # if os.path.exists(file_path_temp):
+            #     os.remove(file_path_temp)
+            #
+            # if os.path.exists(file_path):
+            #     os.remove(file_path)
+            #     filename = user_id + '_temp.jpg'
+            #     file_path = USER_FULLBODY_DIR + '/' + filename
 
             file.save(os.path.join(USER_FULLBODY_DIR, filename))
 
