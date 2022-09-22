@@ -78,12 +78,12 @@ def upload_user_clothes():
         return {'message': 'Image Uploaded!',
                 'user_id': user_id,
                 'img_path': dirname + '/' + filename,
-                'cla': cla}
+                'season': cla}
 
 
 @clothes.route('/upload/save', methods=['GET'])
 def save_user_clothes():
-    ########## Save DB ##########
+    ########## Update DB ##########
     import app
     db = app.db
     from model import MyClothes
@@ -122,7 +122,6 @@ def openpose():
 
 @clothes.route('human_parsing', methods=['GET'])
 def human_parsing():
-    from PIL import Image
     from models.human_parsing import run
     origin_img_path = 'models/02_4_full.jpg'
     output_img_path = 'models/temp/02_4_full.png'
