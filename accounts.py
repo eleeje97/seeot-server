@@ -146,16 +146,19 @@ def update_profile():
             file = request.files['file']
             os.makedirs(USER_FULLBODY_DIR, exist_ok=True)
 
-
             filename = user_id + '.jpg'
             file_path = USER_FULLBODY_DIR + '/' + filename
+            file_path_temp = USER_FULLBODY_DIR + '/' + user_id + '_temp.jpg'
+
+            if os.path.exists(file_path_temp):
+                os.remove(file_path_temp)
 
             if os.path.exists(file_path):
-                filename = user_id + '1.jpg'
+                os.remove(file_path)
+                filename = user_id + '_temp.jpg'
                 file_path = USER_FULLBODY_DIR + '/' + filename
 
             file.save(os.path.join(USER_FULLBODY_DIR, filename))
-
 
             user.full_body_img_path = file_path
 
