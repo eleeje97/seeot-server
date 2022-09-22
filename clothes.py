@@ -56,11 +56,12 @@ def openpose():
 
 @clothes.route('human_parsing', methods=['GET'])
 def human_parsing():
+    from PIL import Image
     from models.human_parsing import run
-    origin_img_path = '/data/seeot-model/02_4_full.jpg'
-    output_img_path = '/data/seeot-model/temp/02_4_full.png'
-    run.human_parsing(origin_img_path, output_img_path)
-    return {'message': 'HUMAN_PARSING SUCCESS!'}
+    origin_img_path = 'models/02_4_full.jpg'
+    output_img_path = 'models/temp/02_4_full.png'
+    result = run.human_parsing(origin_img_path, output_img_path)
+    return {'message': 'HUMAN_PARSING SUCCESS!', 'result': result}
 
 @clothes.route('/cc', methods=['GET'])
 def Classification():

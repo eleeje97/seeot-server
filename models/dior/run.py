@@ -44,3 +44,4 @@ def try_on(base, top, bottom, outer):
     # not tuck in -> [2,1,5]: hair, bottom, top 순서
     pimg, gimgs, oimgs, gen_img, pose = dior_model.dress_in_order(dior_model.model, pid, gids=gids, order=[1, 5, 3])
     dior_model.plot_img(pimg, gimgs, gen_img=gen_img, pose=pose)
+    

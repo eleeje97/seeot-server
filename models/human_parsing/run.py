@@ -7,7 +7,7 @@ def human_parsing(origin_img_path, output_img_path):
     shutil.copy(origin_img_path, '/data/seeot-server/models/human_parsing/inputs/image.jpg')
 
     # run image parsing
-    os.system("python models/human_parsing/simple_extractor.py --dataset 'lip' --model-restore 'checkpoints/final.pth' --input-dir 'inputs' --output-dir 'outputs'")
+    os.system("python models/human_parsing/simple_extractor.py --dataset 'lip' --model-restore 'models/human_parsing/checkpoints/final.pth' --input-dir 'models/human_parsing/inputs' --output-dir 'models/human_parsing/outputs'")
 
     # copy and put output image into /data/seeot-data/
     if os.path.exists('/data/seeot-server/models/human_parsing/outputs/image.png'):
@@ -19,13 +19,13 @@ def human_parsing(origin_img_path, output_img_path):
         # remove images in outputs/
         os.remove('/data/seeot-server/models/human_parsing/outputs/image.png')
 
-
+    return output_img_path
 
 # print(os.environ.get('CUDA_PATH'))
 
 # import torch
 # print(torch.cuda.is_available())
 
-origin_img_path = '/data/seeot-model/02_4_full.jpg'
-output_img_path = '/data/seeot-model/temp/02_4_full.png'
-human_parsing(origin_img_path, output_img_path)
+# origin_img_path = '/data/seeot-server/models/02_4_full.jpg'
+# output_img_path = '/data/seeot-server/models/human_parsing/outputs/02_4_full.png'
+# human_parsing(origin_img_path, output_img_path)

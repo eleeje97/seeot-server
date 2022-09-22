@@ -16,7 +16,7 @@ class Opt:
 
 class DIOR:
     def __init__(self):
-        dataroot = '/data/seeot-model/dior'
+        dataroot = '/data/seeot-server/models/dior'
         exp_name = 'DIOR_64' # DIORv1_64
         epoch = 'latest'
         netG = 'dior' # diorv1
@@ -100,7 +100,7 @@ class DIOR:
 
     def plot_img(self, pimg=[], gimgs=[], oimgs=[], gen_img=[], pose=None):
         if pose != None:
-            print(pose.size())
+            print('pose_size :',pose.size())
             kpt = pose_utils.draw_pose_from_map(pose.cpu().numpy().transpose(1, 2, 0), radius=6)
             kpt = kpt[0]
         if not isinstance(pimg, list):
@@ -109,27 +109,30 @@ class DIOR:
             gen_img = [gen_img]
 
         #######################################
-        # out = pimg + gimgs + oimgs + gen_img
+#         out = pimg + gimgs + oimgs + gen_img
         out = gen_img
         #######################################
+        out = torch.cat(out, 2).float().cpu().detach().numpy()
+        out = (out + 1) / 2  # denormalize
+        out = np.transpose(out, [1, 2, 0])
+        
+#         if out:
+#             out = torch.cat(out, 2).float().cpu().detach().numpy()
+#             out = (out + 1) / 2  # denormalize
+#             out = np.transpose(out, [1, 2, 0])
 
-        if out:
-            out = torch.cat(out, 2).float().cpu().detach().numpy()
-            out = (out + 1) / 2  # denormalize
-            out = np.transpose(out, [1, 2, 0])
-
-            if pose != None:
-                out = np.concatenate((kpt, out), 1)
-        else:
-            out = kpt
-
-        fig = plt.figure(figsize=(6, 4), dpi=100, facecolor='w', edgecolor='k')
+#             if pose != None:
+#                 out = np.concatenate((kpt, out), 1)
+#         else:
+#             out = kpt
+        print(out.shape)
+        fig = plt.figure(figsize=(2, 3),dpi=200, facecolor='w', edgecolor='b')
 
         plt.axis('off')
         plt.imshow(out)
-        plt.savefig('output.png')
+        plt.savefig('output.png', bbox_inches='tight')
         # plt.imshow(out.astype('uint8'))
-
+        
     # define dressing-in-order function (the pipeline)
     def dress_in_order(self, model, pid, pose_id=None, gids=[], ogids=[], order=[5, 1, 3, 2], perturb=False):
         PID = [0, 4, 6, 7]
@@ -169,6 +172,7 @@ class DIOR:
             over_gsegs += [seg]
 
         gsegs = [gsegs[i] for i in order] + over_gsegs
+#         gen_img = model.netG(to_pose[None], psegs, gsegs)
         gen_img = model.netG(to_pose[None], psegs, gsegs)
 
         return pimg, gimgs, oimgs, gen_img[0], to_pose
