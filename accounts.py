@@ -145,10 +145,18 @@ def update_profile():
         if request.files:
             file = request.files['file']
             os.makedirs(USER_FULLBODY_DIR, exist_ok=True)
+
+
             filename = user_id + '.jpg'
+            file_path = USER_FULLBODY_DIR + '/' + filename
+
+            if os.path.exists(file_path):
+                filename = user_id + '1.jpg'
+                file_path = USER_FULLBODY_DIR + '/' + filename
+
             file.save(os.path.join(USER_FULLBODY_DIR, filename))
 
-            file_path = USER_FULLBODY_DIR + '/' + filename
+
             user.full_body_img_path = file_path
 
             origin_img_path = file_path
