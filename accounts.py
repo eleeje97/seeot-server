@@ -105,6 +105,7 @@ def user_info():
         user.access_token = new_access_token
         db.session.commit()
         db.session.close()
+        db.session.remove()
 
         user_info = oauth.userinfo("Bearer " + new_access_token)
 
@@ -159,6 +160,7 @@ def update_profile():
         user.gender = gender
         db.session.commit()
         db.session.close()
+        db.session.remove()
 
         return {'message': 'Profile Updated!',
                 'user_id': user_id,

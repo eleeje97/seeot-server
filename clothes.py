@@ -25,27 +25,93 @@ def upload_user_clothes():
 
     if request.method == 'POST':
         user_id = request.values['user_id']
+        gender = request.values['gender']
         file = request.files['file']
         print(file)
 
         if len(file.filename) == 0:
             return {'message': 'No File Uploaded!'}, 400
 
-        os.makedirs(USER_CLOTHES_DIR, exist_ok=True)
-        filename = user_id + file.filename.split('.')[0] + '.jpg'
-        file.save(os.path.join(USER_CLOTHES_DIR, filename))
+        dirname = os.path.join(USER_CLOTHES_DIR, user_id)
+        os.makedirs(dirname, exist_ok=True)
+        num = 1
+        filename = user_id + '_' + str(num) + '.jpg'
+        while os.path.exists(os.path.join(dirname, filename)):
+            num += 1
+            filename = user_id + '_' + str(num) + '.jpg'
 
-        ########## openpose, humanparsing ##########
-        import sys
-        sys.path.append('/data/seeot-model')
+        file.save(os.path.join(dirname, filename))
 
-        from openpose import run
-        # run.get_keypoints(os.path.join(USER_CLOTHES_DIR, filename))
-        run.get_keypoints('/data/seeot-model/02_4_full.jpg')
+        ########## openpose ##########
+        from models.openpose import run as op
+        op.get_keypoints(os.path.join(dirname, filename))
+
+        ########## human parsing ##########
+        from models.human_parsing import run as hp
+        origin_img_path = os.path.join(dirname, filename)
+        output_img_path = os.path.join(dirname, user_id + '_' + str(num) + '.png')
+        hp.human_parsing(origin_img_path, output_img_path)
+
+        ########## clothes classification ##########
+        from models.efficientnet.run import efficientnet
+
+        # 밖으로 빼고싶은거 (app.py에 적재시 코드 제거 또는 주석)
+        from models.efficientnet.load_model import Load_Model
+        lm = Load_Model()
+        male_model, female_model = lm.set_model()
+
+        ## 받아오는거 : 성별 / 사진이 저장되어있는 경로
+        ## 나갈꺼 사진의 계절
+        clothes_path = output_img_path
+
+        ### 옷 분류 모델 실행 ###
+        cla = ""
+        if gender == "male":
+            # male model
+            clm = efficientnet(male_model)
+        else:
+            # female model
+            clm = efficientnet(female_model)
+
+        cla = clm.run(clothes_path)
 
         return {'message': 'Image Uploaded!',
                 'user_id': user_id,
-                'file_path': USER_CLOTHES_DIR + '/' + filename}
+                'img_path': dirname + '/' + filename,
+                'cla': cla}
+
+
+@clothes.route('/upload/save', methods=['GET'])
+def save_user_clothes():
+    ########## Save DB ##########
+    import app
+    db = app.db
+    from model import MyClothes
+
+    user_id = request.args['user_id']
+    origin_img_path = request.args['img_path']
+    season = request.args['season']
+    is_user_img = True
+
+    my_clothes = MyClothes(user_id=user_id,
+                           origin_img_path=origin_img_path,
+                           season=season,
+                           is_user_img=is_user_img)
+    db.session.add(my_clothes)
+    db.session.commit()
+    db.session.close()
+    db.session.remove()
+
+    return {'message': 'Clothes Saved!',
+            'user_id': user_id}
+
+
+
+
+
+
+
+
 
 
 @clothes.route('openpose', methods=['GET'])

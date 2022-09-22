@@ -70,6 +70,8 @@ def save_recommendation():
     db.session.add(clothes)
     db.session.commit()
     db.session.close()
+    db.session.remove()
+
 
     return {'message': 'Image Save Success!',
             'user_id': user_id,

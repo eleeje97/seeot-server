@@ -19,13 +19,5 @@ def human_parsing(origin_img_path, output_img_path):
         # remove images in outputs/
         os.remove('/data/seeot-server/models/human_parsing/outputs/image.png')
 
-    return output_img_path
+    return 'Human Parsing SUCCESS: ' + output_img_path
 
-# print(os.environ.get('CUDA_PATH'))
-
-# import torch
-# print(torch.cuda.is_available())
-
-# origin_img_path = '/data/seeot-server/models/02_4_full.jpg'
-# output_img_path = '/data/seeot-server/models/human_parsing/outputs/02_4_full.png'
-# human_parsing(origin_img_path, output_img_path)
