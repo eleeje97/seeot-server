@@ -11,8 +11,8 @@ def get_clothes_list():
 
     user_id = request.args['user_id']
 
-    user_clothes = MyClothes.query.filter(MyClothes.user_id == user_id and MyClothes.is_user_img == 1)
-    recommend_clothes = MyClothes.query.filter(MyClothes.user_id == user_id and MyClothes.is_user_img == 0)
+    user_clothes = MyClothes.query.filter(MyClothes.is_user_img).filter(MyClothes.user_id == user_id).all()
+    recommend_clothes = MyClothes.query.filter(not MyClothes.is_user_img).filter(MyClothes.user_id == user_id).all()
 
     return {'user_id': user_id,
             'user_clothes': [i.as_dict() for i in user_clothes],
