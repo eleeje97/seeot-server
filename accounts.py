@@ -129,7 +129,6 @@ def update_profile():
     import os
     from model import User
     import app
-    from models.human_parsing import run
 
     db = app.db
 
@@ -160,11 +159,31 @@ def update_profile():
 
             file.save(os.path.join(USER_FULLBODY_DIR, filename))
 
+
+            ########## openpose ##########
+            from models.openpose import run as op
+            op.get_keypoints(file_path)
+
+            ########## human parsing ##########
+            from models.human_parsing import run as hp
+            origin_img_path = file_path
+            output_img_path = os.path.join(USER_FULLBODY_DIR, user_id + '.png')
+            hp.human_parsing(origin_img_path, output_img_path)
+
+            ## 랜덤값 뒤에 붙이기
+            import string
+            import random
+
+            result = ""
+            for i in range(4):
+                result += random.choice(string.ascii_lowercase)
+
+            filename = user_id + result + '.jpg'
+            file_path = USER_FULLBODY_DIR + '/' + filename
+
+            file.save(file_path)
             user.full_body_img_path = file_path
 
-            origin_img_path = file_path
-            output_img_path = USER_FULLBODY_DIR + '/' + user_id + '.png'
-            # run.human_parsing(origin_img_path, output_img_path)
         else:
             file_path = 'No File Uploaded!'
 
