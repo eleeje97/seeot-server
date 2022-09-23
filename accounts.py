@@ -127,6 +127,7 @@ def user_info():
 @accounts.route('/update/profile', methods=['POST'])
 def update_profile():
     import os
+    import shutil
     from model import User
     import app
 
@@ -179,10 +180,10 @@ def update_profile():
                 result += random.choice(string.ascii_lowercase)
 
             filename = user_id + result + '.jpg'
-            file_path = USER_FULLBODY_DIR + '/' + filename
+            random_file_path = USER_FULLBODY_DIR + '/' + filename
 
-            file.save(file_path)
-            user.full_body_img_path = file_path
+            shutil.copy(file_path, random_file_path)
+            user.full_body_img_path = random_file_path
 
         else:
             file_path = 'No File Uploaded!'
