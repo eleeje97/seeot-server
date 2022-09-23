@@ -35,13 +35,6 @@ def get_keypoints(img_path):
 
     # name==filename인 행이 있다면 해당 행 삭제
     filename = img_path.split('/')[-1]
-    # del_line = -1
-    # with open('/data/seeot-server/models/dior/DATA_ROOT/fasion-annotation-test.csv', 'r') as file:
-    #     reader = csv.reader(file, delimiter=':')
-    #     for line in reader:
-    #         if line[0] == filename:
-    #             del_line = line
-    #             break
 
     with open('/data/seeot-server/models/dior/DATA_ROOT/fasion-annotation-test.csv', "r") as f:
         lines = f.readlines()
@@ -51,18 +44,9 @@ def get_keypoints(img_path):
             if filename not in line:
                 f.write(line)
 
+        # name:keypoints_y:keypoints_x
         f.write(':'.join([filename, str([int(i) for i in keypoints_x]), str([int(i) for i in keypoints_y])]))
         f.writelines('\n')
-
-            # if line.strip("\n") != del_line:
-            #     f.write(line)
-
-
-    # name:keypoints_y:keypoints_x
-
-    # with open('/data/seeot-server/models/dior/DATA_ROOT/fasion-annotation-test.csv', 'a') as file:
-    #     file.write(':'.join([filename, str([int(i) for i in keypoints_x]), str([int(i) for i in keypoints_y])]))
-    #     file.writelines('\n')
 
     # print([int(i) for i in keypoints_x])
     # print([int(i) for i in keypoints_y])
