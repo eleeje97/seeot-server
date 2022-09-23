@@ -35,7 +35,7 @@ def get_keypoints(img_path):
     #
     # name==filename인 행이 있다면 해당 행 삭제
     with open('/data/seeot-server/models/dior/DATA_ROOT/fasion-annotation-test.csv', 'r') as file:
-        reader = csv.reader(file)
+        reader = csv.reader(file, delimiter=':')
         for line in reader:
             print(line)
     #
