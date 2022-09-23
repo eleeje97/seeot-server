@@ -183,6 +183,8 @@ def update_profile():
             random_file_path = USER_FULLBODY_DIR + '/' + filename
 
             shutil.copy(file_path, random_file_path)
+
+            os.remove(user.full_body_img_path)
             user.full_body_img_path = random_file_path
 
         else:
