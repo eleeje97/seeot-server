@@ -45,7 +45,7 @@ def get_keypoints(img_path):
                 f.write(line)
 
         # name:keypoints_y:keypoints_x
-        f.write(':'.join([filename, str([int(i) for i in keypoints_x]), str([int(i) for i in keypoints_y])]))
+        f.write(':'.join([filename, str([int(i) for i in keypoints_y]), str([int(i) for i in keypoints_x])]))
         f.writelines('\n')
 
     # print([int(i) for i in keypoints_x])
