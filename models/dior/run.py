@@ -35,9 +35,9 @@ def try_on(base, top, bottom, outer):
     if top != -1:
         gids.append(("plain", top, 5))
     if bottom != -1:
-        gids.append(("plain", bottom, 5))
+        gids.append(("plain", bottom, 1))
     if outer != -1:
-        gids.append(("plain", outer, 5))
+        gids.append(("plain", outer, 3))
 
     # Try-On: order 리스트에 착용할 순서를 garment 번호로 지정함
     # tuck in -> [2,5,1]: hair, top, bottom 순서
@@ -45,3 +45,6 @@ def try_on(base, top, bottom, outer):
     pimg, gimgs, oimgs, gen_img, pose = dior_model.dress_in_order(dior_model.model, pid, gids=gids, order=[1, 5, 3])
     dior_model.plot_img(pimg, gimgs, gen_img=gen_img, pose=pose)
     
+
+def load_data():
+    dior_model.load_data()

@@ -16,7 +16,7 @@ class Opt:
 
 class DIOR:
     def __init__(self):
-        dataroot = '/data/seeot-server/models/dior'
+        self.dataroot = '/data/seeot-server/models/dior'
         exp_name = 'DIOR_64' # DIORv1_64
         epoch = 'latest'
         netG = 'dior' # diorv1
@@ -24,7 +24,7 @@ class DIOR:
 
         # this is a dummy "argparse"
         opt = Opt()
-        opt.dataroot = dataroot
+        opt.dataroot = self.dataroot
         opt.isTrain = False
         opt.phase = 'test'
         opt.n_human_parts = 8
@@ -56,9 +56,24 @@ class DIOR:
         self.model = DIORModel(opt)
         self.model.setup(opt)
 
+        # # load data
+        # Dataset = DFVisualDataset
+        # self.ds = Dataset(dataroot=dataroot + "/DATA_ROOT", dim=(256, 176), n_human_part=8)
+
+        # # preload a set of pre-selected models defined in "standard_test_anns.txt" for quick visualizations
+        # self.inputs = dict()
+        # for attr in self.ds.attr_keys:
+        #     self.inputs[attr] = self.ds.get_attr_visual_input(attr)
+
+        # print(self.ds.attr_keys)
+
+        self.load_data()
+
+    
+    def load_data(self):
         # load data
         Dataset = DFVisualDataset
-        self.ds = Dataset(dataroot=dataroot + "/DATA_ROOT", dim=(256, 176), n_human_part=8)
+        self.ds = Dataset(dataroot=self.dataroot + "/DATA_ROOT", dim=(256, 176), n_human_part=8)
 
         # preload a set of pre-selected models defined in "standard_test_anns.txt" for quick visualizations
         self.inputs = dict()
@@ -130,7 +145,7 @@ class DIOR:
 
         plt.axis('off')
         plt.imshow(out)
-        plt.savefig('output.png', bbox_inches='tight')
+        plt.savefig('static/output/output.png', bbox_inches='tight')
         # plt.imshow(out.astype('uint8'))
         
     # define dressing-in-order function (the pipeline)
