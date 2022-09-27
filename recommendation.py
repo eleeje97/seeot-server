@@ -45,7 +45,7 @@ def forecast(days, cityName):
     min_tem_searched = jsonObj['forecast']["forecastday"][want_day]["day"]["mintemp_c"]
     text = jsonObj['forecast']["forecastday"][want_day]["day"]["condition"]["text"]
 
-    return_day =  date_searched.split("-")[-1]
+    return_day = date_searched.split("-")[-1]
     return temp, return_day, text, max_tem_searched, min_tem_searched
 
 def User_clothes(userId, temp):
@@ -71,11 +71,8 @@ def User_clothes(userId, temp):
 @recommendation.route('/', methods=['GET'])
 def get_recommendations():
     from model import User
-    import app
     import random
-    from PIL import Image
     import glob
-    db = app.db
     
     # cityName = request.args['CITYS']
     # days = request.args['SELECTED_DAY']
@@ -138,7 +135,8 @@ def get_recommendations():
         return_pics.append("http://210.106.99.80:5050/" + "/".join(i.split("\\")))
     
     return {'gender': gender,
-            'clothes': return_pics}
+            'clothes': return_pics,
+            'season': weather}
 
 
 def get_recommendations_temp():
@@ -168,34 +166,17 @@ def get_recommendations_temp():
 
 @recommendation.route('/save', methods=['GET'])
 def save_recommendation():
-    import os
-    import shutil
     from model import MyClothes
     import app
     db = app.db
 
     user_id = request.args['user_id']
     img_path = request.args['img_path']
+    img_path = img_path[img_path.find('static'):]
+    season = request.args['season']
 
     # user_id 예외처리: 해당 user가 DB에 없는 경우
     # img_path 예외처리: 해당 파일이 없는 경우
-
-
-    # dir_name = os.path.join(USER_CLOTHES_DIR, user_id, 'recommendation')
-    # os.makedirs(dir_name, exist_ok=True)
-    #
-    # file_name = img_path.split('/')[-1].split('.')[0]
-    # output_path = os.path.join(dir_name, file_name + '.jpg')
-    # uniq = 1
-    # while os.path.exists(output_path):
-    #     output_path = os.path.join(dir_name, file_name + str(uniq) + '.jpg')
-    #     uniq += 1
-    #
-    # shutil.copy(img_path, output_path)
-
-
-    # season 추출
-    # season = 'any'
 
     ### DB에 저장 ###
     clothes = MyClothes(user_id=user_id,
@@ -210,7 +191,8 @@ def save_recommendation():
 
     return {'message': 'Image Save Success!',
             'user_id': user_id,
-            'file_path': img_path}
+            'file_path': img_path,
+            'season': season}
 
 
 @recommendation.route('/test', methods=['GET'])
