@@ -69,7 +69,7 @@ def save_recommendation():
                         is_user_img=0)
     db.session.add(clothes)
     db.session.commit()
-    db.session.close()
+    db.session.flush()
     db.session.remove()
 
 

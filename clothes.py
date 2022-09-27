@@ -99,7 +99,7 @@ def save_user_clothes():
                            is_user_img=is_user_img)
     db.session.add(my_clothes)
     db.session.commit()
-    db.session.close()
+    db.session.flush()
     db.session.remove()
 
     return {'message': 'Clothes Saved!',
