@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -23,7 +25,7 @@ app.register_blueprint(clothes.clothes)
 app.register_blueprint(tryon.tryon)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
-app.config['SQLALCHEMY_POOL_SIZE'] = 20
+app.config['SQLALCHEMY_POOL_SIZE'] = 50
 db = SQLAlchemy(app)
 
 

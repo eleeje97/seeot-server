@@ -150,7 +150,8 @@ def update_profile():
             file_path = USER_FULLBODY_DIR + '/' + filename
 
             if user.full_body_img_path:
-                os.remove(user.full_body_img_path)
+                if os.path.exists(user.full_body_img_path):
+                    os.remove(user.full_body_img_path)
 
             file.save(os.path.join(USER_FULLBODY_DIR, filename))
 

@@ -71,7 +71,8 @@ def try_on():
     # output/ 폴더 내 이미지 삭제
     if os.path.exists('static/output'):
         for file in os.scandir('static/output'):
-            os.remove(file.path)
+            if os.path.isfile(file.path):
+                os.remove(file.path)
 
 
     # 모델 실행
@@ -95,18 +96,29 @@ def try_on():
 
 
     # test/, testM_lip/ 이미지 삭제
-    os.remove(img_folder + user_filename)
-    os.remove(img_lip_folder + user_filename.split('.')[0] + '.png')
+    if os.path.exists(img_folder):
+        for file in os.scandir(img_folder):
+            if os.path.isfile(file.path):
+                os.remove(file.path)
+    
+    if os.path.exists(img_lip_folder):
+        for file in os.scandir(img_lip_folder):
+            if os.path.isfile(file.path):
+                os.remove(file.path)
+
+
+    # os.remove(img_folder + user_filename)
+    # os.remove(img_lip_folder + user_filename.split('.')[0] + '.png')
 
     cnt = 1
     if top != '-1':
-        os.remove(img_folder + top_filename)
-        os.remove(img_lip_folder + top_filename.split('.')[0] + '.png')
+        # os.remove(img_folder + top_filename)
+        # os.remove(img_lip_folder + top_filename.split('.')[0] + '.png')
         cnt += 1
 
     if bottom != '-1':
-        os.remove(img_folder + bottom_filename)
-        os.remove(img_lip_folder + bottom_filename.split('.')[0] + '.png')
+        # os.remove(img_folder + bottom_filename)
+        # os.remove(img_lip_folder + bottom_filename.split('.')[0] + '.png')
         cnt += 1
 
 

@@ -114,48 +114,48 @@ def save_user_clothes():
 
 
 
-@clothes.route('openpose', methods=['GET'])
-def openpose():
-    from models.openpose import run
-    run.get_keypoints('/data/seeot-model/02_4_full.jpg')
-    return {'message': 'OPENPOSE SUCCESS!'}
+# @clothes.route('openpose', methods=['GET'])
+# def openpose():
+#     from models.openpose import run
+#     run.get_keypoints('/data/seeot-server/models/test_input_01.jpg')
+#     return {'message': 'OPENPOSE SUCCESS!'}
 
-@clothes.route('human_parsing', methods=['GET'])
-def human_parsing():
-    from models.human_parsing import run
-    origin_img_path = 'models/02_4_full.jpg'
-    output_img_path = 'models/temp/02_4_full.png'
-    result = run.human_parsing(origin_img_path, output_img_path)
-    return {'message': 'HUMAN_PARSING SUCCESS!', 'result': result}
+# @clothes.route('human_parsing', methods=['GET'])
+# def human_parsing():
+#     from models.human_parsing import run
+#     origin_img_path = 'models/test_input_01.jpg'
+#     output_img_path = 'models/temp/test_input_01_full.png'
+#     result = run.human_parsing(origin_img_path, output_img_path)
+#     return {'message': 'HUMAN_PARSING SUCCESS!', 'result': result}
 
-@clothes.route('/cc', methods=['GET'])
-def Classification():
-    ### 필요한 모듈 임포트 ###
-    from models.efficientnet.run import efficientnet
+# @clothes.route('/cc', methods=['GET'])
+# def Classification():
+#     ### 필요한 모듈 임포트 ###
+#     from models.efficientnet.run import efficientnet
 
-    # 밖으로 빼고싶은거 (app.py에 적재시 코드 제거 또는 주석)
-    from models.efficientnet.load_model import Load_Model
-    lm = Load_Model()
-    male_model, female_model = lm.set_model()
+#     # 밖으로 빼고싶은거 (app.py에 적재시 코드 제거 또는 주석)
+#     from models.efficientnet.load_model import Load_Model
+#     lm = Load_Model()
+#     male_model, female_model = lm.set_model()
 
-    ## 받아오는거 : 성별 / 사진이 저장되어있는 경로
+#     ## 받아오는거 : 성별 / 사진이 저장되어있는 경로
 
-    ## 나갈꺼 사진의 계절
-#     clothes_path = request.args['clothes_url']
-#     gender = request.args["gender"]
-    gender = "female"
+#     ## 나갈꺼 사진의 계절
+# #     clothes_path = request.args['clothes_url']
+# #     gender = request.args["gender"]
+#     gender = "female"
 
-    ### 옷 분류 모델 실행 ###
-    cla = ""
-    if gender == "male":
-        # male model
-        clm = efficientnet(male_model)
-#         cla = clm.run(clothes_path)
-        cla = clm.run()
-    else:
-        # female model
-        clm = efficientnet(female_model)
-#         cla = clm.run(clothes_path)
-        cla = clm.run()
+#     ### 옷 분류 모델 실행 ###
+#     cla = ""
+#     if gender == "male":
+#         # male model
+#         clm = efficientnet(male_model)
+# #         cla = clm.run(clothes_path)
+#         cla = clm.run()
+#     else:
+#         # female model
+#         clm = efficientnet(female_model)
+# #         cla = clm.run(clothes_path)
+#         cla = clm.run()
 
-    return cla
+#     return cla
