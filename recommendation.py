@@ -10,26 +10,6 @@ def forecast(days, cityName):
     import json
     
     day = str(days)
-    if cityName == '서울':
-        cityName = 'Seoul'
-
-    elif cityName == '부산':
-        cityName = 'Pusan'
-
-    elif cityName == '인천':
-        cityName = 'Incheon'
-
-    elif cityName == '뉴욕':
-        cityName = 'New York'
-
-    elif cityName == '런던':
-        cityName = 'London'
-
-    elif cityName == '도쿄':
-        cityName = 'Tokyo'
-
-    else:
-        cityName = 'Moscow'
 
     # API 불러오기
     response = requests.get(
@@ -37,6 +17,7 @@ def forecast(days, cityName):
     
     jsonObj = json.loads(response.text)
     want_day = int(day) - int(jsonObj['forecast']["forecastday"][0]["date"].split("-")[-1])
+    # print(int(jsonObj['forecast']["forecastday"][0]["date"].split("-")[-1]))
 
     # 변수에 담기
     date_searched = jsonObj['forecast']["forecastday"][want_day]["date"]
@@ -67,17 +48,26 @@ def User_clothes(userId, temp):
         return_list.append(i[0])
 
     return tuple(return_list)
+
+def remove_list(rist):
+    return_rist = []
+    for i in rist:
+        if i.split(".")[-1] == "jpg":
+            return_rist.append(i)
     
+    return return_rist
+        
+
 @recommendation.route('/', methods=['GET'])
 def get_recommendations():
     from model import User
     import random
     import glob
     
-    # cityName = request.args['CITYS']
-    # days = request.args['SELECTED_DAY']
-    cityName = '서울'
-    days = 27
+    # cityName = request.args['city']
+    # days = request.args['date']
+    cityName = 'Seoul'
+    days = 28
     temp, _, _, _, _ = forecast(days, cityName)
     
     user_id = request.args['user_id']
@@ -112,23 +102,29 @@ def get_recommendations():
     if weather == 'Spring_fall':
         if len(user_path) > 0:
             seeot_springfall_list.extend(list(user_path))
-            pics.append(random.sample(seeot_springfall_list,3))
+            seeot_springfall_list = remove_list(seeot_springfall_list)
+            pics.append(random.sample(seeot_springfall_list,6))
         else:
-            pics.append(random.sample(seeot_springfall_list,3))
+            seeot_springfall_list = remove_list(seeot_springfall_list)
+            pics.append(random.sample(seeot_springfall_list,6))
 
     elif weather == 'Summer':
         if len(user_path) > 0:
             seeot_summer_list.extend(list(user_path))
-            pics.append(random.sample(seeot_summer_list,3))
+            seeot_springfall_list = remove_list(seeot_summer_list)
+            pics.append(random.sample(seeot_summer_list,6))
         else:
-            pics.append(random.sample(seeot_summer_list,3))
+            seeot_springfall_list = remove_list(seeot_summer_list)
+            pics.append(random.sample(seeot_summer_list,6))
 
     elif weather == 'Winter':
         if len(user_path) > 0:
             seeot_winter_list.extend(list(user_path))
-            pics.append(random.sample(seeot_winter_list,3))
+            seeot_springfall_list = remove_list(seeot_winter_list)
+            pics.append(random.sample(seeot_winter_list,6))
         else:
-            pics.append(random.sample(seeot_winter_list,3))
+            seeot_springfall_list = remove_list(seeot_winter_list)
+            pics.append(random.sample(seeot_winter_list,6))
     
     return_pics = []
     for i in pics[0]:

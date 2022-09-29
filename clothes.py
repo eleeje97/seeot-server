@@ -123,8 +123,8 @@ def save_user_clothes():
 # @clothes.route('human_parsing', methods=['GET'])
 # def human_parsing():
 #     from models.human_parsing import run
-#     origin_img_path = 'models/test_input_01.jpg'
-#     output_img_path = 'models/temp/test_input_01_full.png'
+#     origin_img_path = 'models/img_ppt.jpg'
+#     output_img_path = 'models/temp/img_ppt_full.png'
 #     result = run.human_parsing(origin_img_path, output_img_path)
 #     return {'message': 'HUMAN_PARSING SUCCESS!', 'result': result}
 
