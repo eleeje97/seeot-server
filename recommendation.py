@@ -5,29 +5,33 @@ from key.file_path import USER_CLOTHES_DIR
 recommendation = Blueprint('recommendation', __name__, url_prefix='/recommendation')
 
 
-def forecast(days, cityName):
+def forecast(date, cityName):
     import requests
     import json
-    
-    day = str(days)
 
     # API 불러오기
     response = requests.get(
-        'http://api.weatherapi.com/v1/forecast.json?key=00dbb30dbbb6417aa4a12016221909&q=' + cityName + '&days=' + day + '&aqi=no&alerts=no' + '&lang=ko')
+        'http://api.weatherapi.com/v1/forecast.json?key=00dbb30dbbb6417aa4a12016221909&q=' + cityName +
+        '&days=14&aqi=no&alerts=no' + '&lang=ko')
     
     jsonObj = json.loads(response.text)
-    want_day = int(day) - int(jsonObj['forecast']["forecastday"][0]["date"].split("-")[-1])
-    # print(int(jsonObj['forecast']["forecastday"][0]["date"].split("-")[-1]))
+
+
+    data = jsonObj['forecast']["forecastday"]
+    target = data[0]
+    for i in data:
+        if i["date"] == date:
+            target = i
+
 
     # 변수에 담기
-    date_searched = jsonObj['forecast']["forecastday"][want_day]["date"]
-    temp = jsonObj['forecast']["forecastday"][want_day]["day"]["avgtemp_c"]
-    max_tem_searched = jsonObj['forecast']["forecastday"][want_day]["day"]["maxtemp_c"]
-    min_tem_searched = jsonObj['forecast']["forecastday"][want_day]["day"]["mintemp_c"]
-    text = jsonObj['forecast']["forecastday"][want_day]["day"]["condition"]["text"]
+    temp = target["day"]["avgtemp_c"]
+    max_tem_searched = target["day"]["maxtemp_c"]
+    min_tem_searched = target["day"]["mintemp_c"]
+    text = target["day"]["condition"]["text"]
 
-    return_day = date_searched.split("-")[-1]
-    return temp, return_day, text, max_tem_searched, min_tem_searched
+    return temp, text, max_tem_searched, min_tem_searched
+
 
 def User_clothes(userId, temp):
     from model import MyClothes
@@ -64,11 +68,9 @@ def get_recommendations():
     import random
     import glob
     
-    # cityName = request.args['city']
-    # days = request.args['date']
-    cityName = 'Seoul'
-    days = 28
-    temp, _, _, _, _ = forecast(days, cityName)
+    cityName = request.args['city']
+    date = request.args['date']
+    temp, text, max, min = forecast(date, cityName)
     
     user_id = request.args['user_id']
     user = User.query.filter(User.id == user_id).first()
@@ -129,10 +131,14 @@ def get_recommendations():
     return_pics = []
     for i in pics[0]:
         return_pics.append("http://210.106.99.80:5050/" + "/".join(i.split("\\")))
-    
+
     return {'gender': gender,
             'clothes': return_pics,
-            'season': weather}
+            'season': weather,
+            'forecast': text,
+            'max_temp': max,
+            'min_temp': min,
+            'avg_temp': temp}
 
 
 def get_recommendations_temp():
