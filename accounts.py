@@ -103,10 +103,6 @@ def user_info():
     if 'code' in user_info:
         new_access_token = oauth.token(user.refresh_token)['access_token']
         user.access_token = new_access_token
-        db.session.commit()
-        db.session.flush()
-        db.session.remove()
-
         user_info = oauth.userinfo("Bearer " + new_access_token)
 
     kakao_account = user_info['kakao_account']
@@ -114,6 +110,10 @@ def user_info():
     gender = user.gender
     profile_image_url = kakao_account['profile']['profile_image_url']
     full_body_img_path = user.full_body_img_path
+
+    db.session.commit()
+    db.session.flush()
+    db.session.remove()
 
     response = {'user': {'id': user_id,
                          'nickname': nickname,

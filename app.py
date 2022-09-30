@@ -25,7 +25,7 @@ app.register_blueprint(clothes.clothes)
 app.register_blueprint(tryon.tryon)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
-app.config['SQLALCHEMY_POOL_SIZE'] = 50
+app.config['SQLALCHEMY_POOL_SIZE'] = 100
 db = SQLAlchemy(app)
 
 
