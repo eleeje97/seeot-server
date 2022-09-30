@@ -24,10 +24,16 @@ app.register_blueprint(recommendation.recommendation)
 app.register_blueprint(clothes.clothes)
 app.register_blueprint(tryon.tryon)
 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 app.config['SQLALCHEMY_POOL_SIZE'] = 100
 db = SQLAlchemy(app)
+db.init_app(app)
 
+
+@app.teardown_appcontext
+def teardown_db(error):
+    db.session.remove()
 
 @app.route('/')
 def hello_world():
